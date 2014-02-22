@@ -26,7 +26,7 @@ BOOL CWindowsHook::Install(int iHook, DWORD dwPID)
     {
         if(-1 != dwPID)
         {
-            m_hHook =::SetWindowsHookEx(iHook, (HOOKPROC)_HookProc, m_hModule, GetThreadIDByProcssID(dwPID));
+            m_hHook =::SetWindowsHookEx(iHook, (HOOKPROC)_HookProc, m_hModule, GetMTIDFromPID(dwPID));
         }
         else
             m_hHook =::SetWindowsHookEx(iHook, (HOOKPROC)_HookProc, m_hModule, 0);

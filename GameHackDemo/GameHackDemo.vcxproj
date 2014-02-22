@@ -116,6 +116,8 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\GameHack\GameUtility.cpp" />
+    <ClCompile Include="..\GameHack\InjectDll.cpp" />
     <ClCompile Include="GameHackDemo.cpp" />
     <ClCompile Include="GameHelper.cpp" />
     <ClCompile Include="stdafx.cpp">

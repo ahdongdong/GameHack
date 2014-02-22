@@ -1,4 +1,6 @@
 #pragma once
 
-DWORD GetThreadIDByProcssID(DWORD dwProcessID);
-HWND GetWindowHandleByPID(DWORD dwProcessID);
+DWORD GetMTIDFromPID(DWORD dwProcessID);
+HWND GetHwndFromPID(DWORD dwProcessID);
+BOOL EnablePrivilege(LPCTSTR PrivilegeName);
+DWORD GetPidFromName(LPCTSTR sProName);

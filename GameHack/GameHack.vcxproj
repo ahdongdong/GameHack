@@ -85,6 +85,7 @@
     <ClInclude Include="DlgMain.h" />
     <ClInclude Include="GamePlayer.h" />
     <ClInclude Include="IniReader.h" />
+    <ClInclude Include="InjectDll.h" />
     <ClInclude Include="ProcessHelper.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
@@ -106,6 +107,7 @@
     </ClCompile>
     <ClCompile Include="GamePlayer.cpp" />
     <ClCompile Include="IniReader.cpp" />
+    <ClCompile Include="InjectDll.cpp" />
     <ClCompile Include="ProcessHelper.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

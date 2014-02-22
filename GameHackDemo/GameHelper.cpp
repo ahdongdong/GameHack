@@ -1,6 +1,7 @@
 #include "StdAfx.h"
 #include "GameHelper.h"
 #include <TlHelp32.h>
+#include "..\GameHack\GameUtility.h"
 
 
 CGameHelper::CGameHelper(void)
@@ -14,29 +15,6 @@ CGameHelper::CGameHelper(void)
 CGameHelper::~CGameHelper(void)
 {
     Stop();
-}
-
-
-DWORD CGameHelper::GetThreadIDByProcssID(DWORD dwProcessID)
-{
-    DWORD dwThreadID = -1;
-    THREADENTRY32 te32 = {sizeof(te32)};
-    HANDLE hThreadSnap = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, dwProcessID);
-
-    if(Thread32First(hThreadSnap, &te32))
-    {
-        do
-        {
-            if(dwProcessID == te32.th32OwnerProcessID)
-            {
-                dwThreadID = te32.th32ThreadID;
-                break;
-            }
-        }
-        while(Thread32Next(hThreadSnap, &te32));
-    }
-
-    return dwThreadID;
 }
 
 BOOL CGameHelper::Start(CString sProName)
@@ -58,38 +36,6 @@ BOOL CGameHelper::Stop()
     BOOL bRet = UnInstallHook();
     UnInit();
     return bRet;
-}
-
-DWORD CGameHelper::GetPidFromName(CString sProName)
-{
-    DWORD dwPID = -1;
-    HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-
-    if(NULL == hSnap)
-    {
-        return -1;
-    }
-
-    PROCESSENTRY32 tr;
-    tr.dwSize = sizeof(PROCESSENTRY32);
-
-    if(Process32First(hSnap, &tr))
-    {
-        do
-        {
-            CString sName = tr.szExeFile;
-
-            if(0 == sName.CompareNoCase(sProName))
-            {
-                dwPID = tr.th32ProcessID;
-                break;
-            }
-        }
-        while(Process32Next(hSnap, &tr));
-    }
-
-    CloseHandle(hSnap);
-    return dwPID;
 }
 
 BOOL CGameHelper::Init()

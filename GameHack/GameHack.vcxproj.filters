@@ -51,6 +51,9 @@
     <ClInclude Include="WinHook.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="InjectDll.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -81,6 +84,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="WinHook.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="InjectDll.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

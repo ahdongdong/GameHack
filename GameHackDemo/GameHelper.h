@@ -17,8 +17,7 @@ protected:
     BOOL InstallHook(DWORD dwPID);
     BOOL UnInstallHook();
     CString GetGameHackDllPath();
-    DWORD GetPidFromName(CString sProName);
-    DWORD GetThreadIDByProcssID(DWORD dwProcessID);
+
 private:
     HMODULE m_hGameHackDll;
     InstallWindowHook m_InstallWH;

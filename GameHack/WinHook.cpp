@@ -28,7 +28,7 @@ BOOL CWinHook::HookProc(int nCode, WPARAM wParam, LPARAM lParam)
             m_pDlgMain = new CDlgMain();
         }
 
-        HWND hParent = GetWindowHandleByPID(GetCurrentProcessId());
+        HWND hParent = GetHwndFromPID(GetCurrentProcessId());
         m_pDlgMain->Create(m_hModule, hParent, GetCurrentProcessId());
         m_pDlgMain->Show(m_pDlgMain->IsShow() ? FALSE : TRUE);
         return TRUE;
