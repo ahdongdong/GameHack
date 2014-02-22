@@ -2,76 +2,82 @@
 #include "ProcessHelper.h"
 
 
-CProcessHelper::CProcessHelper( DWORD dwID )
+CProcessHelper::CProcessHelper()
 {
-    m_dwID = dwID;
     m_hProcess = NULL;
 }
 
 
-CProcessHelper::~CProcessHelper( void )
+CProcessHelper::~CProcessHelper(void)
 {
     Close();
 }
 
-BOOL CProcessHelper::Open()
+BOOL CProcessHelper::Open(DWORD dwPID)
 {
-    EnablePrivilege( SE_DEBUG_NAME );
-    if ( NULL == m_hProcess )
+    EnablePrivilege(SE_DEBUG_NAME);
+
+    if(NULL == m_hProcess)
     {
-        m_hProcess =::OpenProcess( PROCESS_ALL_ACCESS, FALSE, m_dwID );
+        m_hProcess =::OpenProcess(PROCESS_ALL_ACCESS, FALSE, dwPID);
+
+        if(NULL != m_hProcess)
+        {
+            m_dwID = dwPID;
+            return TRUE;
+        }
     }
-    
-    return ( NULL != m_hProcess );
+
+    return FALSE;
 }
 
 BOOL CProcessHelper::Close()
 {
-    if ( NULL != m_hProcess )
+    if(NULL != m_hProcess)
     {
-        ::CloseHandle( m_hProcess );
+        ::CloseHandle(m_hProcess);
         m_hProcess = NULL;
     }
-    
+
     return TRUE;
 }
 
 BOOL CProcessHelper::Terminal()
 {
     BOOL bRet = FALSE;
-    
-    if ( NULL != m_hProcess )
+
+    if(NULL != m_hProcess)
     {
-        bRet =::TerminateProcess( m_hProcess, 0 );
+        bRet =::TerminateProcess(m_hProcess, 0);
     }
-    
+
     return bRet;
 }
 
-BOOL CProcessHelper::ReadMemory( LPCVOID lpAddr, LPVOID lpBuf, DWORD dwReadSize )
+BOOL CProcessHelper::ReadMemory(LPCVOID lpAddr, LPVOID lpBuf, DWORD dwReadSize)
 {
     BOOL bRet = FALSE;
     DWORD dwReaded = 0;
-    
-    if ( NULL != m_hProcess )
+
+    if(NULL != m_hProcess)
     {
-        bRet =::ReadProcessMemory( m_hProcess, lpAddr, lpBuf, dwReadSize, &dwReaded );
+        bRet =::ReadProcessMemory(m_hProcess, lpAddr, lpBuf, dwReadSize, &dwReaded);
     }
-    
-    return ( ( TRUE == bRet ) && ( dwReadSize == dwReaded ) );
+
+    return ((TRUE == bRet) && (dwReadSize == dwReaded));
 }
 
-BOOL CProcessHelper::WriteMemory( LPVOID lpAddr, LPCVOID lpBuf, DWORD dwWriteSize )
+BOOL CProcessHelper::WriteMemory(LPVOID lpAddr, LPCVOID lpBuf, DWORD dwWriteSize)
 {
     BOOL bRet = FALSE;
     DWORD dwWrited = 0;
-    
-    if ( NULL != m_hProcess )
+
+    if(NULL != m_hProcess)
     {
-        bRet =::WriteProcessMemory( m_hProcess, lpAddr, lpBuf, dwWriteSize, &dwWrited );
+        bRet =::WriteProcessMemory(m_hProcess, lpAddr, lpBuf, dwWriteSize, &dwWrited);
     }
-    
-    return ( ( TRUE == bRet ) && ( dwWrited == dwWriteSize ) );
+
+    return ((TRUE == bRet) && (dwWrited == dwWriteSize));
 }
 
 DWORD CProcessHelper::GetPID()const
@@ -85,31 +91,31 @@ HANDLE CProcessHelper::GetHandle()
 }
 
 
-BOOL CProcessHelper::EnablePrivilege( LPCTSTR PrivilegeName )
+BOOL CProcessHelper::EnablePrivilege(LPCTSTR PrivilegeName)
 {
     HANDLE tokenhandle;
     TOKEN_PRIVILEGES tp;
     tp.PrivilegeCount = 1;
     tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-    
-    if ( !OpenProcessToken( GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &tokenhandle ) )
+
+    if(!OpenProcessToken(GetCurrentProcess(), TOKEN_ADJUST_PRIVILEGES, &tokenhandle))
     {
         return FALSE;
     }
-    
-    if ( !LookupPrivilegeValue( NULL, PrivilegeName, &tp.Privileges[0].Luid ) )
+
+    if(!LookupPrivilegeValue(NULL, PrivilegeName, &tp.Privileges[0].Luid))
     {
-        CloseHandle( tokenhandle );
+        CloseHandle(tokenhandle);
         return FALSE;
     }
-    
-    if ( !AdjustTokenPrivileges( tokenhandle, FALSE, &tp, sizeof( tp ), NULL, NULL ) )
+
+    if(!AdjustTokenPrivileges(tokenhandle, FALSE, &tp, sizeof(tp), NULL, NULL))
     {
-        CloseHandle( tokenhandle );
+        CloseHandle(tokenhandle);
         return FALSE;
     }
-    
-    CloseHandle( tokenhandle );
+
+    CloseHandle(tokenhandle);
     return TRUE;
 }
 

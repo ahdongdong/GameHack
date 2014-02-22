@@ -3,13 +3,13 @@
 class CConfigFile
 {
 public:
-    CConfigFile( void );
-    virtual ~CConfigFile( void );
-    
-    BOOL Load( LPCTSTR lpszPath );
+    CConfigFile(void);
+    virtual ~CConfigFile(void);
+
+    BOOL Load(LPCTSTR lpszPath);
     void UnLoad();
     DWORD GetGameBase()const;
-	DWORD GetGameModule()const;
+    DWORD GetGameModule()const;
     DWORD GetAxisX()const;
     DWORD GetAxisY()const;
     DWORD GetPlayerName()const;

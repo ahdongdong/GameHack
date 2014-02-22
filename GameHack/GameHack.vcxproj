@@ -83,13 +83,15 @@
   <ItemGroup>
     <ClInclude Include="ConfigFile.h" />
     <ClInclude Include="DlgMain.h" />
-    <ClInclude Include="GameHack.h" />
     <ClInclude Include="GamePlayer.h" />
     <ClInclude Include="IniReader.h" />
     <ClInclude Include="ProcessHelper.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="GameUtility.h" />
+    <ClInclude Include="WindowsHook.h" />
+    <ClInclude Include="WinHook.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConfigFile.cpp" />
@@ -102,7 +104,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="GameHack.cpp" />
     <ClCompile Include="GamePlayer.cpp" />
     <ClCompile Include="IniReader.cpp" />
     <ClCompile Include="ProcessHelper.cpp" />
@@ -110,6 +111,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="GameUtility.cpp" />
+    <ClCompile Include="WindowsHook.cpp" />
+    <ClCompile Include="WinHook.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameHack.rc" />

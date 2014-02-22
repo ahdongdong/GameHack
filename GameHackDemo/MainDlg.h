@@ -60,9 +60,7 @@ public:
         pLoop->AddIdleHandler( this );
         
         UIAddChildWindowContainer( m_hWnd );
-        
-        m_gameHelper.Init();
-        
+              
         return TRUE;
     }
     
@@ -75,7 +73,6 @@ public:
         pLoop->RemoveIdleHandler( this );
         
 		m_gameHelper.Stop();
-        m_gameHelper.UnInit();
         return 0;
     }
     
@@ -101,6 +98,7 @@ public:
     
     void CloseDialog( int nVal )
     {
+		m_gameHelper.Stop();
         DestroyWindow();
         ::PostQuitMessage( nVal );
     }
@@ -118,9 +116,8 @@ public:
     {
         CString sConfig;
         GetConfigPath( sConfig );
-        m_gameHelper.SetCfgPath( sConfig );
-        const CString sGameName = _T( "asktao.mod" );
-//		const CString sGameName = _T( "notepad++.exe" );
+//        const CString sGameName = _T( "asktao.mod" );
+		const CString sGameName = _T( "notepad++.exe" );
         CString sInfo;
         if ( m_gameHelper.Start( sGameName ) )
         {

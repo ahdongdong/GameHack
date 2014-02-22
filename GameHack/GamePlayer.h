@@ -1,21 +1,20 @@
 #pragma once
-#include "ProcessHelper.h"
-#include "ConfigFile.h"
+
+class CProcessHelper;
+class CConfigFile;
+
 class CGamePlayer
 {
 public:
-    CGamePlayer();
-    virtual ~CGamePlayer( void );
-    
-    BOOL Init( DWORD dwPID );
-    void UnInit();
-    
-	CString GetCurAxis()const;
-	CString GetPlayerName()const;
+    CGamePlayer(CProcessHelper* pProHlp, CConfigFile* pCfgHlp);
+    virtual ~CGamePlayer(void);
+
+    CString GetCurAxis()const;
+    CString GetPlayerName()const;
 protected:
-	DWORD GetGameBase()const;
+    DWORD GetGameBase()const;
 private:
     CProcessHelper* m_pProHelper;
-    CConfigFile m_configFile;
+    CConfigFile* m_pConfigFile;
 };
 

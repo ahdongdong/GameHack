@@ -24,9 +24,6 @@
     <ClInclude Include="targetver.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="GameHack.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="DlgMain.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -45,12 +42,18 @@
     <ClInclude Include="ConfigFile.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="WindowsHook.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUtility.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="WinHook.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="GameHack.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="dllmain.cpp">
@@ -69,6 +72,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="ConfigFile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WindowsHook.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUtility.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="WinHook.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

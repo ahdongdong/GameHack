@@ -4,121 +4,153 @@
 #include "resource.h"
 #include "GamePlayer.h"
 
-extern CGamePlayer g_gamePlayer;
-extern DWORD g_dwPID;
-extern CDlgMain* g_dlgMain;
-HWND CDlgMain::m_hDlg = NULL;
-CDlgMain::CDlgMain( void )
+CDlgMain* CDlgMain::m_pThis = NULL;
+CDlgMain::CDlgMain(void): m_hDlg(NULL), m_pPlayer(NULL)
 {
-
+    m_pThis = this;
 }
 
-CDlgMain::~CDlgMain( void )
+CDlgMain::~CDlgMain(void)
 {
-    Destroy();
+    Close();
 }
 
-BOOL CDlgMain::Create( HMODULE hDll, HWND hParent )
+void CDlgMain::GetConfigPath(CString& sPath) const
 {
-    if ( NULL != m_hDlg )
+    TCHAR sModulePath[MAX_PATH] = {0};
+    GetModuleFileName(NULL, sModulePath, MAX_PATH);
+    CString sModule = sModulePath;
+    sModule.Truncate(sModule.ReverseFind(_T('\\')) + 1);
+    sPath = sModule + _T("GameHack.ini");
+}
+
+BOOL CDlgMain::Create(HMODULE hDll, HWND hParent, DWORD dwPID)
+{
+    if(NULL != m_hDlg)
     {
         return TRUE;
     }
-    m_hDlg = CreateDialogParam( hDll, MAKEINTRESOURCE( IDD_DLG_MAIN ), hParent, ( DLGPROC )DlgProc, 0 ) ;
-    return TRUE;
-}
 
-BOOL CDlgMain::Show( BOOL bShow/*=TRUE*/ )
-{
-    if ( !IsWindow( m_hDlg ) )
+//  CString sCfgPath;
+//  GetConfigPath(sCfgPath);
+    CString sCfgPath = _T("G:\\Project\\GameHack\\bin\\Debug\\GameHack.ini");
+
+    if(!m_configFile.Load(sCfgPath))
     {
         return FALSE;
     }
-    return ::ShowWindow( m_hDlg, bShow ? SW_SHOWNORMAL : SW_HIDE );
+
+    if(!m_proHlp.Open(dwPID))
+    {
+        return FALSE;
+    }
+
+    m_pPlayer = new CGamePlayer(&m_proHlp, &m_configFile);
+    m_hDlg = CreateDialogParam(hDll, MAKEINTRESOURCE(IDD_DLG_MAIN), hParent, (DLGPROC)DlgProc, (LPARAM)this) ;
+    return TRUE;
+}
+
+BOOL CDlgMain::Show(BOOL bShow/*=TRUE*/)
+{
+    if(!IsWindow(m_hDlg))
+    {
+        return FALSE;
+    }
+
+    return ::ShowWindow(m_hDlg, bShow ? SW_SHOWNORMAL : SW_HIDE);
 }
 
 BOOL CDlgMain::IsShow() const
 {
-    if ( !IsWindow( m_hDlg ) )
+    if(!IsWindow(m_hDlg))
     {
         return FALSE;
     }
-    return ::IsWindowVisible( m_hDlg );
+
+    return ::IsWindowVisible(m_hDlg);
 }
 
-INT_PTR CALLBACK  CDlgMain::DlgProc( HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam )
+INT_PTR CALLBACK  CDlgMain::DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)
 {
-    switch ( message )
+    switch(message)
     {
-        case WM_INITDIALOG:
-        {
-            if ( !g_gamePlayer.Init( g_dwPID ) )
-            {
-                return FALSE;
-            }
-            return ( TRUE );
-        }
         case WM_CLOSE:
         {
-            g_dlgMain->Show( FALSE );
-            return ( TRUE );
+            m_pThis->Show(FALSE);
+            m_pThis->Close();
+            return (TRUE);
         }
-        case WM_DESTROY:
-        {
-			g_gamePlayer.UnInit();
-            return TRUE;
-        }
+
         case WM_TIMER:
         {
-            TimerProc( g_dlgMain->m_hDlg, WM_TIMER, wParam, 0 );
+            TimerProc(hDlg, WM_TIMER, wParam, 0);
             return TRUE;
         }
+
         case WM_COMMAND:
-            switch ( LOWORD( wParam ) )
+            switch(LOWORD(wParam))
             {
                 case IDC_START:
                 {
-                    ::SetTimer( g_dlgMain->m_hDlg, 0, 500, NULL );
+                    ::SetTimer(hDlg, 0, 500, NULL);
                     return TRUE;
                 }
+
                 case IDC_STOP:
                 {
-                    ::KillTimer( g_dlgMain->m_hDlg, 0 );
+                    ::KillTimer(hDlg, 0);
                     return TRUE;
                 }
             }
-            return ( FALSE );
+
+            return (FALSE);
     }
+
     return FALSE;
 }
 
 void CDlgMain::Destroy()
 {
-    if ( NULL != m_hDlg )
+    if(NULL != m_pPlayer)
     {
-        if ( !IsWindow( m_hDlg ) )
+        delete m_pPlayer;
+        m_pPlayer = NULL;
+    }
+
+    m_configFile.UnLoad();
+    m_proHlp.Close();
+
+    if(NULL != m_hDlg)
+    {
+        if(!IsWindow(m_hDlg))
         {
             return ;
         }
-        DestroyWindow( m_hDlg );
+
+        DestroyWindow(m_hDlg);
         m_hDlg = NULL;
     }
 }
 
-VOID CALLBACK CDlgMain::TimerProc( HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime )
+VOID CALLBACK CDlgMain::TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime)
 {
-    if ( 0 == idEvent )
+    if(0 == idEvent)
     {
-        CString sCurAxis = g_gamePlayer.GetCurAxis();   
-        SetItemText( hwnd, IDC_STATIC_CURAXIS, sCurAxis );
+        CString sCurAxis = m_pThis->m_pPlayer->GetCurAxis();
+        SetItemText(hwnd, IDC_STATIC_CURAXIS, sCurAxis);
 
-		CString sPlayerName=g_gamePlayer.GetPlayerName();
-		SetItemText(hwnd,IDC_STATIC_MC,sPlayerName);
+        CString sPlayerName = m_pThis->m_pPlayer->GetPlayerName();
+        SetItemText(hwnd, IDC_STATIC_MC, sPlayerName);
     }
 }
 
-void CDlgMain::SetItemText( HWND hDlg, UINT itemID, LPCTSTR lpszText )
+void CDlgMain::SetItemText(HWND hDlg, UINT itemID, LPCTSTR lpszText)
 {
-    HWND hCtrl = GetDlgItem( hDlg, itemID );
-    SetWindowText( hCtrl, lpszText );
+    HWND hCtrl = GetDlgItem(hDlg, itemID);
+    SetWindowText(hCtrl, lpszText);
+}
+
+void CDlgMain::Close()
+{
+    Destroy();
 }
