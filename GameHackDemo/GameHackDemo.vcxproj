@@ -18,13 +18,13 @@
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -116,8 +116,13 @@
     </Midl>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\GameHack\GameUtility.cpp" />
-    <ClCompile Include="..\GameHack\InjectDll.cpp" />
+    <ClCompile Include="..\GameHack\Core\FileMap.cpp" />
+    <ClCompile Include="..\GameHack\Core\GameUtility.cpp" />
+    <ClCompile Include="..\GameHack\Core\IniReader.cpp" />
+    <ClCompile Include="..\GameHack\Core\InjectDll.cpp" />
+    <ClCompile Include="..\GameHack\Core\ModuleHide.cpp" />
+    <ClCompile Include="..\GameHack\Core\ProcessHelper.cpp" />
+    <ClCompile Include="..\GameHack\Core\WindowsHook.cpp" />
     <ClCompile Include="GameHackDemo.cpp" />
     <ClCompile Include="GameHelper.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -126,6 +131,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\GameHack\Core\FileMap.h" />
+    <ClInclude Include="..\GameHack\Core\GameUtility.h" />
+    <ClInclude Include="..\GameHack\Core\IniReader.h" />
+    <ClInclude Include="..\GameHack\Core\InjectDll.h" />
+    <ClInclude Include="..\GameHack\Core\ModuleHide.h" />
+    <ClInclude Include="..\GameHack\Core\ProcessHelper.h" />
+    <ClInclude Include="..\GameHack\Core\WindowsHook.h" />
     <ClInclude Include="AboutDlg.h" />
     <ClInclude Include="GameHelper.h" />
     <ClInclude Include="MainDlg.h" />
@@ -136,6 +148,12 @@
     <ResourceCompile Include="GameHackDemo.rc" />
   </ItemGroup>
   <ItemGroup>
+    <CustomBuild Include="..\GameHack\Core\AsmUtitly.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ml /c $(ProjectDir)..\GameHack\Core\AsmUtitly.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AsmUtitly.obj</Outputs>
+    </CustomBuild>
     <None Include="res\GameHackDemo.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

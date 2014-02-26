@@ -13,6 +13,9 @@
       <UniqueIdentifier>{f9cb2688-d770-4620-a5d1-cf02249f9a35}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;jpg;jpeg;jpe;manifest</Extensions>
     </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{b7610107-d160-49f7-bc2f-d7a4334dd2e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -24,11 +27,26 @@
     <ClCompile Include="GameHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\GameHack\GameUtility.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\GameHack\Core\WindowsHook.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="..\GameHack\InjectDll.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="..\GameHack\Core\ProcessHelper.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameHack\Core\InjectDll.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameHack\Core\IniReader.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameHack\Core\GameUtility.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameHack\Core\FileMap.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="..\GameHack\Core\ModuleHide.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -47,6 +65,27 @@
     <ClInclude Include="GameHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\GameHack\Core\WindowsHook.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameHack\Core\ProcessHelper.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameHack\Core\InjectDll.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameHack\Core\IniReader.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameHack\Core\GameUtility.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameHack\Core\FileMap.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\GameHack\Core\ModuleHide.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameHackDemo.rc">
@@ -57,5 +96,10 @@
     <None Include="res\GameHackDemo.ico">
       <Filter>Resource Files</Filter>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\GameHack\Core\AsmUtitly.asm">
+      <Filter>Core</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

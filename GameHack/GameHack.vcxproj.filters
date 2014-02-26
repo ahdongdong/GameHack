@@ -13,47 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="stdafx.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="targetver.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="DlgMain.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ProcessHelper.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GamePlayer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="IniReader.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ConfigFile.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="WindowsHook.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="GameUtility.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="WinHook.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="InjectDll.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <Filter Include="Core">
+      <UniqueIdentifier>{0b545137-e409-4d3a-9750-bef057b93e4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameLogic">
+      <UniqueIdentifier>{2af3d57f-93a9-4c38-b1be-69dd704d068d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -62,37 +27,92 @@
     <ClCompile Include="dllmain.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="DlgMain.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="Core\WindowsHook.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="ProcessHelper.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="Core\ProcessHelper.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="GamePlayer.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="Core\InjectDll.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="IniReader.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="Core\IniReader.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="ConfigFile.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="Core\GameUtility.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="WindowsHook.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="GameLogic\ConfigFile.cpp">
+      <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="GameUtility.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="GameLogic\DlgMain.cpp">
+      <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="WinHook.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="GameLogic\GamePlayer.cpp">
+      <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="InjectDll.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="GameLogic\WinHook.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\FileMap.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\ModuleHide.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameHack.rc">
       <Filter>资源文件</Filter>
     </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="resource.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\WindowsHook.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ProcessHelper.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\InjectDll.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\IniReader.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameUtility.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\ConfigFile.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\DlgMain.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\GamePlayer.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\WinHook.h">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\FileMap.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\ModuleHide.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Core\AsmUtitly.asm">
+      <Filter>Core</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

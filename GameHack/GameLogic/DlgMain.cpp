@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include <Windows.h>
 #include "DlgMain.h"
-#include "resource.h"
+#include "..\resource.h"
 #include "GamePlayer.h"
 
 CDlgMain* CDlgMain::m_pThis = NULL;
@@ -15,13 +15,17 @@ CDlgMain::~CDlgMain(void)
     Close();
 }
 
-void CDlgMain::GetConfigPath(CString& sPath) const
+CString CDlgMain::GetConfigPath() const
 {
+	const CString sCfgPath = _T("H:\\Project\\GameHack\\bin\\Debug\\GameHack.ini");
+	return sCfgPath;
+
     TCHAR sModulePath[MAX_PATH] = {0};
     GetModuleFileName(NULL, sModulePath, MAX_PATH);
     CString sModule = sModulePath;
     sModule.Truncate(sModule.ReverseFind(_T('\\')) + 1);
-    sPath = sModule + _T("GameHack.ini");
+    CString sPath = sModule + _T("GameHack.ini");
+	return sPath;
 }
 
 BOOL CDlgMain::Create(HMODULE hDll, HWND hParent, DWORD dwPID)
@@ -31,9 +35,7 @@ BOOL CDlgMain::Create(HMODULE hDll, HWND hParent, DWORD dwPID)
         return TRUE;
     }
 
-//  CString sCfgPath;
-//  GetConfigPath(sCfgPath);
-    CString sCfgPath = _T("G:\\Project\\GameHack\\bin\\Debug\\GameHack.ini");
+	CString sCfgPath=GetConfigPath();
 
     if(!m_configFile.Load(sCfgPath))
     {

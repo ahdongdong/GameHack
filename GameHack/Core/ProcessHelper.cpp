@@ -6,6 +6,7 @@
 CProcessHelper::CProcessHelper()
 {
     m_hProcess = NULL;
+    m_dwID = -1;
 }
 
 
@@ -14,7 +15,7 @@ CProcessHelper::~CProcessHelper(void)
     Close();
 }
 
-BOOL CProcessHelper::Open(DWORD dwPID ,DWORD dwDesiredAccess)
+BOOL CProcessHelper::Open(DWORD dwPID , DWORD dwDesiredAccess)
 {
     EnablePrivilege(SE_DEBUG_NAME);
 
@@ -40,6 +41,7 @@ BOOL CProcessHelper::Close()
         m_hProcess = NULL;
     }
 
+    m_dwID = -1;
     return TRUE;
 }
 
@@ -116,7 +118,7 @@ BOOL CProcessHelper::VirtualFreeEx(LPVOID lpAddress, SIZE_T dwSize, DWORD dwFree
     return ::VirtualFreeEx(m_hProcess, lpAddress, dwSize, dwFreeType);
 }
 
-HANDLE CProcessHelper::CreateThread( LPTHREAD_START_ROUTINE lpAddr,LPVOID dwThreadParam )
+HANDLE CProcessHelper::CreateThread(LPTHREAD_START_ROUTINE lpAddr, LPVOID dwThreadParam)
 {
-	return ::CreateRemoteThread(m_hProcess, NULL, NULL, lpAddr, dwThreadParam, 0, NULL);
+    return ::CreateRemoteThread(m_hProcess, NULL, NULL, lpAddr, dwThreadParam, 0, NULL);
 }

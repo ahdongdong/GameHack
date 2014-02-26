@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "GameHelper.h"
 #include <TlHelp32.h>
-#include "..\GameHack\GameUtility.h"
+#include "..\GameHack\Core\GameUtility.h"
 
 
 CGameHelper::CGameHelper(void)

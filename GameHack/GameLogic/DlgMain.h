@@ -14,7 +14,7 @@ public:
     BOOL Show(BOOL bShow = TRUE);
     BOOL IsShow()const;
 protected:
-    void GetConfigPath(CString& sPath) const;
+    CString GetConfigPath() const;
     void Destroy();
     static VOID CALLBACK TimerProc(HWND hwnd, UINT uMsg, UINT_PTR idEvent, DWORD dwTime);
     static INT_PTR CALLBACK DlgProc(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam);

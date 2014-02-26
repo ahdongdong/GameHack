@@ -4,9 +4,11 @@
 
 #pragma once
 #include "GameHelper.h"
-#include "..\GameHack\GameUtility.h"
-#include "..\GameHack\InjectDll.h"
+#include "..\GameHack\Core\GameUtility.h"
+#include "..\GameHack\Core\InjectDll.h"
+#include "..\GameHack\Core\ModuleHide.h"
 
+#pragma comment(lib,"WS2_32.lib")
 class CMainDlg : public CDialogImpl<CMainDlg>, public CUpdateUI<CMainDlg>,
     public CMessageFilter, public CIdleHandler
 {
@@ -63,6 +65,8 @@ public:
 
         UIAddChildWindowContainer(m_hWnd);
 
+		Test();
+
         return TRUE;
     }
 
@@ -114,12 +118,17 @@ public:
         sPath = sModule + _T("GameHack.ini");
     }
 
+	void GetGameInfo(CString& sGameName,CString& sInjectDll)
+	{
+		const CString strGameName = _T("elementclient.exe");
+		const CString strDllPath = _T("H:\\Project\\GameHack\\bin\\Debug\\GameHack.dll");
+		sGameName=strGameName;
+		sInjectDll=strDllPath;
+	}
+
     LRESULT OnBnClickedButton1(WORD /*wNotifyCode*/, WORD /*wID*/, HWND /*hWndCtl*/, BOOL& /*bHandled*/)
     {
-        Test();
-        return 0;
-
-        const CString sGameName = _T("notepad++.exe");
+        const CString sGameName = _T("elementclient.exe");
         CString sInfo;
 
         if(m_gameHelper.Start(sGameName))
@@ -147,18 +156,27 @@ public:
 
     void Test()
     {
-        const CString sGameName = _T("notepad++.exe");
-        const CString sDllPath = _T("G:\\GameHack.dll");
-        DWORD dwPID = GetPidFromName(sGameName);
+
+		const CString strGameName = _T("notepad++.exe");
+		const CString strDllPath = _T("H:\\Project\\GameHack\\bin\\Debug\\GameHack.dll");
+
+		HMODULE h=LoadLibrary(strDllPath);
+		CModuleHide moduleHide;
+		moduleHide.LDRHide(h);
+		return ;
+
+        DWORD dwPID = GetPidFromName(strGameName);
         CInjectDll injectDll;
 
-        if(!injectDll.ApcInjectDll(dwPID, sDllPath))
+        if(!injectDll.ApcInject(dwPID, strDllPath))
         {
             MessageBox(_T("◊¢»Î ß∞‹"));
 			return ;
         }
 
-        if(!injectDll.ApcUnInjectDll(dwPID, sDllPath))
+
+
+        if(!injectDll.ApcUnInjectDll(dwPID, strDllPath))
         {
             MessageBox(_T("–∂‘ÿ ß∞‹"));
         }

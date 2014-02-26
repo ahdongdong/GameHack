@@ -3,6 +3,9 @@
 #include "GameUtility.h"
 #include <tlhelp32.h>
 #include <Psapi.h>
+#include "ProcessHelper.h"
+#include "FileMap.h"
+#include <atlconv.h>
 
 CInjectDll::CInjectDll(void)
 {
@@ -268,7 +271,6 @@ BOOL CInjectDll::ApcInjectDll(DWORD dwPID, LPCTSTR lpszDllName)
             hthSnapshot = NULL;
         }
 
-
         if(NULL != hPro)
         {
             ::CloseHandle(hPro);
@@ -277,6 +279,105 @@ BOOL CInjectDll::ApcInjectDll(DWORD dwPID, LPCTSTR lpszDllName)
     }
 
     return FALSE;
+}
+
+
+BOOL CInjectDll::ApcInject(DWORD dwPID, LPCTSTR lpszDllName)
+{
+    if(!EnablePrivilege(SE_DEBUG_NAME))
+    {
+        return FALSE;
+    }
+
+    //定义指向NtMapViewOfSection的函数指针类型
+    typedef enum _SECTION_INHERIT
+    {
+        ViewShare = 1,
+        ViewUnmap = 2
+    } SECTION_INHERIT;
+    typedef DWORD (WINAPI * tNtMapViewOfSection)(HANDLE, HANDLE, LPVOID, ULONG, SIZE_T,
+            LARGE_INTEGER*, SIZE_T*, SECTION_INHERIT, ULONG, ULONG);
+    tNtMapViewOfSection NtMapViewOfSection = (tNtMapViewOfSection)GetProcAddress(
+                GetModuleHandle(_T("ntdll.dll")), "NtMapViewOfSection");
+
+    if(!NtMapViewOfSection) return FALSE;
+
+    CProcessHelper proHlp;
+    CFileMap fileMap;
+
+    if(!proHlp.Open(dwPID)) return FALSE;
+
+    DWORD dwMapSize = (_tcslen(lpszDllName) + 1) * sizeof(TCHAR);
+
+    if(!fileMap.Create(dwMapSize)) return FALSE;
+
+    USES_CONVERSION;
+    memcpy_s(fileMap.GetMapAddress(), dwMapSize, CW2A(lpszDllName), dwMapSize);
+//    _tcscpy_s((TCHAR*)fileMap.GetMapAddress(), dwMapSize, lpszDllName);
+    LPVOID RemoteString = NULL;
+    ULONG ViewSize = 0;
+    void * lpDllName   = NULL;
+
+    if(0 != NtMapViewOfSection(fileMap.GetModuleHandle(), proHlp.GetModuleHandle(),
+                               &RemoteString, 0, 0, NULL, &ViewSize, ViewShare, 0, PAGE_EXECUTE_READWRITE))
+        return FALSE;
+
+#ifdef _UNICODE
+#define Libaray ("LoadLibraryW")
+#else
+#define Libaray ("LoadLibraryA")
+#endif
+    LPVOID nLoadLibrary = (LPVOID)GetProcAddress(GetModuleHandle(_T("kernel32.dll")), Libaray);
+    // 创建线程快照
+    THREADENTRY32 te32 = { sizeof(THREADENTRY32) } ;
+    HANDLE hthSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPTHREAD, dwPID) ;
+
+    if(hthSnapshot == INVALID_HANDLE_VALUE)
+        return FALSE ;
+
+    // 枚举所有线程
+    if(Thread32First(hthSnapshot, &te32))
+    {
+        do
+        {
+            // 判断是否目标进程中的线程
+            if(te32.th32OwnerProcessID == dwPID)
+            {
+                // 打开线程
+                HANDLE hThread = OpenThread(THREAD_ALL_ACCESS, FALSE, te32.th32ThreadID) ;
+
+                if(hThread)
+                {
+                    // 向指定线程添加APC
+                    if(!QueueUserAPC((PAPCFUNC)nLoadLibrary, hThread, (ULONG_PTR)RemoteString))
+                    {
+                        CloseHandle(hThread);
+                        return FALSE;
+                    }
+
+                    CloseHandle(hThread);
+                }
+            }
+        }
+        while(Thread32Next(hthSnapshot, &te32)) ;
+    }
+
+//     DWORD dwRemoteMainTID = proHlp.GetMainThreadID();
+//     HANDLE hThread = OpenThread(THREAD_ALL_ACCESS, FALSE, dwRemoteMainTID);
+//
+//     if(NULL == hThread)
+//         return FALSE;
+//
+//     if(!QueueUserAPC((PAPCFUNC)nLoadLibrary, hThread, (ULONG_PTR)RemoteString))
+//     {
+//         CloseHandle(hThread);
+//         return FALSE;
+//     }
+//
+//     CloseHandle(hThread);
+    fileMap.Close();
+    proHlp.Close();
+    return TRUE;
 }
 
 BOOL CInjectDll::ApcUnInjectDll(DWORD dwPID, LPCTSTR lpszDllName)
@@ -372,7 +473,6 @@ BOOL CInjectDll::ApcUnInjectDll(DWORD dwPID, LPCTSTR lpszDllName)
             CloseHandle(hthSnapshot);
             hthSnapshot = NULL;
         }
-
 
         if(NULL != hPro)
         {

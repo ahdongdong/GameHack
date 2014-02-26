@@ -20,14 +20,14 @@
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -55,6 +55,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;GAMEHACK_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(PorjectDir)Core;$(PorjectDir)GameLogic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -69,6 +70,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;GAMEHACK_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(PorjectDir)Core;$(PorjectDir)GameLogic;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -78,25 +80,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="ConfigFile.h" />
-    <ClInclude Include="DlgMain.h" />
-    <ClInclude Include="GamePlayer.h" />
-    <ClInclude Include="IniReader.h" />
-    <ClInclude Include="InjectDll.h" />
-    <ClInclude Include="ProcessHelper.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="targetver.h" />
-    <ClInclude Include="GameUtility.h" />
-    <ClInclude Include="WindowsHook.h" />
-    <ClInclude Include="WinHook.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="ConfigFile.cpp" />
-    <ClCompile Include="DlgMain.cpp" />
+    <ClCompile Include="Core\FileMap.cpp" />
+    <ClCompile Include="Core\GameUtility.cpp" />
+    <ClCompile Include="Core\IniReader.cpp" />
+    <ClCompile Include="Core\InjectDll.cpp" />
+    <ClCompile Include="Core\ModuleHide.cpp" />
+    <ClCompile Include="Core\ProcessHelper.cpp" />
+    <ClCompile Include="Core\WindowsHook.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -105,20 +95,41 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
       </PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="GamePlayer.cpp" />
-    <ClCompile Include="IniReader.cpp" />
-    <ClCompile Include="InjectDll.cpp" />
-    <ClCompile Include="ProcessHelper.cpp" />
+    <ClCompile Include="GameLogic\ConfigFile.cpp" />
+    <ClCompile Include="GameLogic\DlgMain.cpp" />
+    <ClCompile Include="GameLogic\GamePlayer.cpp" />
+    <ClCompile Include="GameLogic\WinHook.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="GameUtility.cpp" />
-    <ClCompile Include="WindowsHook.cpp" />
-    <ClCompile Include="WinHook.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameHack.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Core\FileMap.h" />
+    <ClInclude Include="Core\GameUtility.h" />
+    <ClInclude Include="Core\IniReader.h" />
+    <ClInclude Include="Core\InjectDll.h" />
+    <ClInclude Include="Core\ModuleHide.h" />
+    <ClInclude Include="Core\ProcessHelper.h" />
+    <ClInclude Include="Core\WindowsHook.h" />
+    <ClInclude Include="GameLogic\ConfigFile.h" />
+    <ClInclude Include="GameLogic\DlgMain.h" />
+    <ClInclude Include="GameLogic\GamePlayer.h" />
+    <ClInclude Include="GameLogic\WinHook.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="targetver.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="Core\AsmUtitly.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <FileType>Document</FileType>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ml /c $(ProjectDir)Core\AsmUtitly.asm</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AsmUtitly.obj</Outputs>
+    </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

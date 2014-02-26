@@ -10,5 +10,7 @@ public:
 
 	BOOL ApcInjectDll(DWORD dwPID, LPCTSTR lpszDllName);
 	BOOL ApcUnInjectDll(DWORD dwPID, LPCTSTR lpszDllName);
+
+	BOOL ApcInject(DWORD dwPID, LPCTSTR lpszDllName);
 };
 
