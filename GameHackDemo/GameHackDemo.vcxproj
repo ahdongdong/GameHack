@@ -96,6 +96,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
     <ResourceCompile>
       <Culture>0x0409</Culture>
@@ -153,6 +154,11 @@
       <FileType>Document</FileType>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">ml /c $(ProjectDir)..\GameHack\Core\AsmUtitly.asm</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AsmUtitly.obj</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">ml /c $(ProjectDir)..\GameHack\Core\AsmUtitly.asm</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AsmUtitly.obj</Outputs>
     </CustomBuild>
     <None Include="res\GameHackDemo.ico" />
   </ItemGroup>

@@ -60,6 +60,15 @@
     <ClCompile Include="Core\ModuleHide.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="NamedPipe.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\AnonymousPipeServer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\AnonymousPipeClient.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GameHack.rc">
@@ -107,6 +116,18 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\ModuleHide.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="NamedPipe.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\IAnonymousPipe.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\AnonymousPipeServer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\AnonymousPipeClient.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>

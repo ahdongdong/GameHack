@@ -65,7 +65,7 @@ public:
 
         UIAddChildWindowContainer(m_hWnd);
 
-		Test();
+		TestPipe();
 
         return TRUE;
     }
@@ -181,4 +181,9 @@ public:
             MessageBox(_T("–∂‘ÿ ß∞‹"));
         }
     }
+
+	void TestPipe()
+	{
+
+	}
 };
